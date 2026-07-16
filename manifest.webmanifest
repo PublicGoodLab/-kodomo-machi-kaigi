@@ -1,0 +1,16 @@
+{
+  "name": "こどもまち会議",
+  "short_name": "まち会議",
+  "description": "町長になって、みんなが暮らしやすい町をつくろう！考えて話し合う、こどものためのまちづくりゲーム。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6eeda",
+  "theme_color": "#f6eeda",
+  "lang": "ja",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

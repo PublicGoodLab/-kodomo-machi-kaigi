@@ -1,0 +1,372 @@
+/* ============================================================
+   style.css
+   デザイン方針：
+   ・紙のボードゲームのような温かみ（クラフト紙色の背景、手作り感）
+   ・大きなボタン、丸いカード、iPad/iPhoneでも押しやすいサイズ
+   ・アニメーションは控えめ（画面切り替えのフェードのみ）
+   ・フォントは端末に入っている丸ゴシック系を優先（外部フォント不使用）
+   ============================================================ */
+
+:root {
+  --paper: #f6eeda;
+  --paper-deep: #efe3c8;
+  --card: #fffbf0;
+  --ink: #4a3728;
+  --ink-soft: #8a7a64;
+  --green: #6b9b5d;
+  --green-deep: #4f7a44;
+  --amber: #e8a33d;
+  --rust: #b85c3e;
+  --line: #d9c9a8;
+  --radius-card: 18px;
+  --shadow-card: 0 3px 0 var(--line), 0 6px 14px rgba(74, 55, 40, 0.12);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Hiragino Maru Gothic ProN", "BIZ UDPGothic", "Yu Gothic", "Hiragino Sans",
+    "Noto Sans JP", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: contain;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-bottom: 88px; /* 下タブの高さぶん確保 */
+}
+
+#app {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #app { animation: none; }
+}
+
+h1, h2, h3 { margin: 0 0 8px; line-height: 1.4; }
+p { margin: 0 0 10px; line-height: 1.7; }
+
+/* ---------- カード共通 ---------- */
+.card, .paper-card, .title-card {
+  background: var(--card);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+  padding: 18px;
+  margin-bottom: 14px;
+}
+
+.title-card {
+  text-align: center;
+  border-radius: 22px 20px 24px 18px; /* 少し不揃いにして手作り感 */
+  background: linear-gradient(180deg, var(--card), var(--paper-deep));
+}
+.title-card.small { padding: 12px 18px; }
+.title-emoji { font-size: 2.6rem; }
+.title-card h1 { font-size: 1.5rem; color: var(--green-deep); }
+.subtitle { color: var(--ink-soft); font-size: 0.95rem; }
+.small-note { color: var(--ink-soft); font-size: 0.85rem; }
+
+/* ---------- ボタン ---------- */
+.big-button {
+  display: block;
+  width: 100%;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  font-family: inherit;
+}
+.big-button:active { transform: scale(0.97); }
+.big-button.primary {
+  background: var(--green);
+  color: #fff;
+  box-shadow: 0 3px 0 var(--green-deep);
+}
+.big-button.primary:disabled {
+  background: #cbb;
+  box-shadow: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.big-button.ghost {
+  background: transparent;
+  color: var(--ink-soft);
+  border: 2px solid var(--line);
+}
+.big-button.ghost.danger { color: var(--rust); border-color: var(--rust); }
+
+.choice-list { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.choice-button {
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 2px solid var(--green);
+  background: #fff;
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+.choice-button:active { transform: scale(0.98); }
+
+/* ---------- ステータスパネル ---------- */
+.status-panel { padding: 16px 18px; }
+.budget-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.budget-label { font-weight: 700; color: var(--amber); }
+.budget-value { font-size: 1.4rem; font-weight: 700; color: var(--amber); }
+
+.stat-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.stat-label { flex: 0 0 88px; font-size: 0.85rem; color: var(--ink-soft); }
+.stat-bar-bg {
+  flex: 1;
+  height: 10px;
+  background: var(--paper-deep);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.stat-bar-fill { height: 100%; background: var(--green); border-radius: 999px; }
+.stat-value { flex: 0 0 28px; text-align: right; font-size: 0.85rem; color: var(--ink-soft); }
+
+/* ---------- まち会議画面 ---------- */
+.meeting-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.year-badge, .budget-badge {
+  background: var(--paper-deep);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-weight: 700;
+  border: 1px solid var(--line);
+}
+.phase-title { font-size: 1.15rem; margin-bottom: 10px; }
+
+.card-emoji { font-size: 2.2rem; margin-bottom: 6px; }
+.card-emoji.big { font-size: 2.8rem; }
+
+.event-card, .request-card {
+  border-radius: 20px 16px 20px 16px;
+  text-align: left;
+}
+.notice-card {
+  background: var(--paper-deep);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  border: 1px dashed var(--ink-soft);
+}
+.comment-line { font-size: 0.9rem; color: var(--ink-soft); }
+
+.request-card.urgency-高 { border-left: 6px solid var(--rust); }
+.request-card.urgency-中 { border-left: 6px solid var(--amber); }
+.request-card.urgency-低 { border-left: 6px solid var(--green); }
+.urgency-tag {
+  display: inline-block;
+  font-size: 0.8rem;
+  background: var(--paper-deep);
+  border-radius: 999px;
+  padding: 4px 10px;
+  color: var(--ink-soft);
+}
+.request-text { font-size: 1.05rem; }
+
+/* ---------- 政策カード ---------- */
+.policy-grid { display: flex; flex-direction: column; gap: 12px; }
+.policy-card {
+  cursor: pointer;
+  border-radius: 16px 20px 16px 20px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.policy-card.reference { cursor: default; }
+.policy-card.selected {
+  border: 2px solid var(--green);
+  background: #fbf6e6;
+}
+.policy-desc { font-size: 0.92rem; }
+.policy-effect { font-size: 0.92rem; color: var(--green-deep); font-weight: 700; }
+.policy-bad { font-size: 0.88rem; color: var(--rust); }
+.policy-cost { font-size: 0.85rem; color: var(--ink-soft); }
+.policy-status { font-size: 0.85rem; font-weight: 700; color: var(--ink-soft); }
+
+.sticky-footer {
+  position: sticky;
+  bottom: 78px;
+  background: var(--paper);
+  padding-top: 10px;
+  border-top: 1px dashed var(--line);
+  margin-top: 6px;
+}
+.cost-summary { font-weight: 700; text-align: center; }
+.cost-summary.over { color: var(--rust); }
+
+/* ---------- 結果・反応 ---------- */
+.comment-bubble {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 10px 16px;
+  margin-bottom: 8px;
+  box-shadow: var(--shadow-card);
+}
+.comment-emoji { font-size: 1.4rem; }
+.empty-note { color: var(--ink-soft); text-align: center; padding: 20px 0; }
+
+/* ---------- 記録画面 ---------- */
+.record-card h3 { color: var(--green-deep); }
+
+/* ---------- 下部ナビゲーション ---------- */
+#bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background: var(--card);
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -4px 12px rgba(74, 55, 40, 0.08);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  z-index: 10;
+}
+.nav-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 10px 4px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: var(--ink-soft);
+  font-family: inherit;
+  cursor: pointer;
+}
+.nav-btn.active { color: var(--green-deep); }
+.nav-emoji { font-size: 1.3rem; }
+.nav-label { font-size: 0.7rem; font-weight: 700; }
+
+/* ---------- まち会議：議題・住民の声 ---------- */
+.agenda-card { text-align: left; border-left: 6px solid var(--green); }
+.voice-card {
+  border-radius: 16px 20px 16px 20px;
+  padding: 12px 14px;
+  text-align: left;
+}
+.voice-top { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.voice-emoji { font-size: 1.4rem; }
+.voice-name { font-weight: 700; flex: 1; }
+.stance-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 3px 10px;
+  background: var(--paper-deep);
+  white-space: nowrap;
+}
+.voice-reason { font-size: 0.95rem; color: var(--ink-soft); margin: 0; }
+.voice-card.stance-agree { border-left: 6px solid var(--green); }
+.voice-card.stance-neutral { border-left: 6px solid var(--amber); }
+.voice-card.stance-concerned { border-left: 6px solid var(--rust); }
+
+/* ---------- 町ニュース ---------- */
+.news-card {
+  background: var(--card);
+  border: 1px solid var(--ink);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  text-align: center;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+}
+.news-border { margin: 2px 0; letter-spacing: -1px; color: var(--ink-soft); }
+.news-title { font-weight: 700; font-size: 1.05rem; margin: 4px 0; }
+.news-headline { font-weight: 700; font-size: 1.1rem; margin: 8px 0 4px; }
+.news-body { font-size: 0.92rem; margin: 2px 0; }
+.news-small { font-size: 0.8rem; color: var(--ink-soft); margin: 6px 0 2px; }
+
+/* ---------- なぜ？トグル ---------- */
+.why-row { margin-bottom: 8px; }
+.why-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--paper-deep);
+  border: none;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+.why-delta { font-weight: 700; color: var(--green-deep); }
+.why-reasons {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 8px 12px;
+  background: #fff;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+.why-reasons.hidden { display: none; }
+.why-reasons li { margin-bottom: 4px; }
+.why-reasons li:last-child { margin-bottom: 0; }
+
+/* ---------- 議長メモ ---------- */
+.chair-note-card h3 { margin-bottom: 10px; }
+.chair-input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #fff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+.chair-input:focus { outline: 2px solid var(--green); outline-offset: 1px; }
+.chair-memo-view {
+  background: var(--paper-deep);
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin: 8px 0;
+}
+
+/* ---------- チュートリアル ---------- */
+.tutorial-screen { display: flex; flex-direction: column; min-height: 70vh; justify-content: center; }
+.tutorial-card { text-align: center; }
+.tutorial-progress { text-align: center; margin-bottom: 10px; }
+
+/* ---------- レスポンシブ ---------- */
+@media (max-width: 380px) {
+  .stat-label { flex-basis: 72px; }
+}
